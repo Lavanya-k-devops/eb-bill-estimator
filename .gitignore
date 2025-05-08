@@ -47,3 +47,4 @@ docker-compose.yml
 *.terraform.lock.hcl
 *.tfstate
 *.tfstate.backup
+ebill-terraform/variables.tf
