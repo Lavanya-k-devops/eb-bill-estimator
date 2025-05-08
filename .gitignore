@@ -1,0 +1,25 @@
+cat <<EOF > .gitignore
+# Maven / Gradle / IDE / Logs / OS junk
+target/
+*.log
+*.class
+*.jar
+*.war
+*.iml
+.idea/
+*.swp
+.DS_Store
+
+# Node
+node_modules/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Env and secrets
+.env
+*.pem
+*.key
+EOF
