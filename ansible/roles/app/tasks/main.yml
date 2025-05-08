@@ -1,0 +1,20 @@
+- name: Remove existing container
+  docker_container:
+    name: bill-estimator
+    state: absent
+    force_kill: true
+  ignore_errors: yes
+
+- name: Pull latest Docker image from Docker Hub
+  docker_image:
+    name: lavanya0421/ebill-estimator
+    source: pull
+
+- name: Run the Docker container
+  docker_container:
+    name: bill-estimator
+    image: lavanya0421/ebill-estimator
+    state: started
+    restart_policy: always
+    ports:
+      - "8082:8082"

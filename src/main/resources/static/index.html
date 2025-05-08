@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Electricity Bill Estimator</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h2>Electricity Bill Estimator</h2>
+        <form id="applianceForm">
+            <div id="applianceContainer">
+                <div class="appliance" id="appliance-1">
+                    <div class="form-group">
+                        <label for="applianceName-1">Appliance Name</label>
+                        <input type="text" id="applianceName-1" class="form-control" name="applianceName[]" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="wattage-1">Wattage (in watts)</label>
+                        <input type="number" id="wattage-1" class="form-control" name="wattage[]" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="usageHours-1">Usage Hours per day</label>
+                        <input type="number" id="usageHours-1" class="form-control" name="usageHours[]" required>
+                    </div>
+                </div>
+            </div>
+
+            <button type="button" class="btn btn-primary" id="addAppliance">Add Appliance</button>
+            <button type="submit" class="btn btn-success mt-3">Calculate Bill</button>
+        </form>
+        <div id="result" class="mt-4"></div>
+    </div>
+
+    <script>
+        let applianceCount = 1;
+
+        // Add a new appliance input form
+        document.getElementById('addAppliance').addEventListener('click', function () {
+            applianceCount++;
+            let applianceContainer = document.getElementById('applianceContainer');
+            let newAppliance = document.createElement('div');
+            newAppliance.classList.add('appliance');
+            newAppliance.id = `appliance-${applianceCount}`;
+
+            newAppliance.innerHTML = `
+                <div class="form-group">
+                    <label for="applianceName-${applianceCount}">Appliance Name</label>
+                    <input type="text" id="applianceName-${applianceCount}" class="form-control" name="applianceName[]" required>
+                </div>
+                <div class="form-group">
+                    <label for="wattage-${applianceCount}">Wattage (in watts)</label>
+                    <input type="number" id="wattage-${applianceCount}" class="form-control" name="wattage[]" required>
+                </div>
+                <div class="form-group">
+                    <label for="usageHours-${applianceCount}">Usage Hours per day</label>
+                    <input type="number" id="usageHours-${applianceCount}" class="form-control" name="usageHours[]" required>
+                </div>
+            `;
+            applianceContainer.appendChild(newAppliance);
+        });
+
+        // Handle form submission
+        document.getElementById('applianceForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            // Collect all appliance data
+            let applianceData = {
+                applianceName: [],
+                wattage: [],
+                usageHours: []
+            };
+
+            const applianceNames = document.getElementsByName('applianceName[]');
+            const wattages = document.getElementsByName('wattage[]');
+            const usageHours = document.getElementsByName('usageHours[]');
+
+            for (let i = 0; i < applianceNames.length; i++) {
+                applianceData.applianceName.push(applianceNames[i].value);
+                applianceData.wattage.push(parseFloat(wattages[i].value));  // Ensure it's a number
+                applianceData.usageHours.push(parseFloat(usageHours[i].value));  // Ensure it's a number
+            }
+
+            // Send data to backend for calculation
+            fetch('/api/calculateBill', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(applianceData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Display the result
+                document.getElementById('result').innerHTML = `
+                    <h4>Total Units: ${data.totalUnits} kWh</h4>
+                    <h4>Estimated Bill: ₹${data.billAmount}</h4>
+                `;
+            })
+            .catch(error => console.error('Error:', error));
+        });
+    </script>
+</body>
+</html>

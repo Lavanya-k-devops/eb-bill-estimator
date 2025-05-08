@@ -1,4 +1,3 @@
-cat <<EOF > .gitignore
 # Maven / Gradle / IDE / Logs / OS junk
 target/
 *.log
@@ -22,4 +21,7 @@ __pycache__/
 .env
 *.pem
 *.key
-EOF
+*.pem
+*.tfstate
+*.tfstate.backup
+

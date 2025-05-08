@@ -1,0 +1,5 @@
+- name: Deploy Spring Boot App
+  hosts: ebill_project
+  become: yes
+  roles:
+    - app

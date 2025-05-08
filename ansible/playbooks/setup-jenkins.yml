@@ -1,0 +1,21 @@
+- name: Setup Jenkins
+  hosts: ebill_project
+  become: yes
+
+  tasks:
+    - name: Add Jenkins repository
+      ansible.builtin.apt_repository:
+        repo: "deb [arch=amd64 signed-by=/usr/share/keyrings/jenkins-keyring.asc] https://pkg.jenkins.io/debian-stable/ binary/"
+        state: present
+        filename: jenkins
+
+    - name: Install Jenkins
+      ansible.builtin.apt:
+        name: jenkins
+        state: present
+
+    - name: Ensure Jenkins is started
+      ansible.builtin.systemd:
+        name: jenkins
+        state: started
+        enabled: yes

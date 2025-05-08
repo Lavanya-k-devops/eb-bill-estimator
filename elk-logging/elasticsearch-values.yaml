@@ -1,0 +1,40 @@
+replicas: 1
+minimumMasterNodes: 1
+resources:
+  requests:
+    cpu: "100m"
+    memory: "512Mi"
+  limits:
+    cpu: "500m"
+    memory: "1Gi"
+
+# Persistence settings (optional)
+persistence:
+  enabled: true
+  storageClass: "standard"
+  size: "30Gi"
+
+# Elasticsearch password settings (optional)
+elasticsearchPassword: "devops@123"
+
+# Enable Kibana and Filebeat (optional)
+kibana:
+  enabled: true
+  replicaCount: 1
+
+filebeat:
+  enabled: true
+  replicaCount: 1
+
+# Security settings (optional)
+security:
+  enabled: true
+  xpack:
+    security:
+      enabled: true
+      transport:
+        ssl:
+          enabled: true
+      http:
+        ssl:
+          enabled: true
