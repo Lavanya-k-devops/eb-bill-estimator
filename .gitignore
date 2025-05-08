@@ -21,7 +21,29 @@ __pycache__/
 .env
 *.pem
 *.key
-*.pem
+
+# Ignore all logs and temp files
+*.log
+*.bak
+*.swp
+
+# Ignore compiled Java files
+*.class
+
+# Ignore Maven/Gradle build files
+target/
+build/
+
+# Ignore Docker and Kubernetes specific files
+docker-compose.yml
+*.docker
+*.kube/
+
+# Ignore IDE files (e.g., IntelliJ, VSCode)
+.idea/
+.vscode/
+
+# Ignore Terraform lock file
+*.terraform.lock.hcl
 *.tfstate
 *.tfstate.backup
-
